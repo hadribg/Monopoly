@@ -6,8 +6,7 @@ namespace MonopolyV3
 	{
 		public static void Main (string[] args)
 		{
-			// coucou
-			Console.WriteLine ("Hellooooooo World!");
+			Console.WriteLine ("Helloo World!");
 		}
 	}
 }
