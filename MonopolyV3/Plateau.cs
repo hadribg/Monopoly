@@ -7,10 +7,10 @@ using System.IO;
 namespace monopoly {
 	public class Plateau {
 		private LinkedList<Case> cases = new LinkedList<Case>();
-        private ArrayList joueurs = new ArrayList();
+		private LinkedList<Joueur> joueurs = new LinkedList<Joueur>();
 		private Dictionary<string,Groupe> groupes = new Dictionary<string,Groupe>();
 
-		public Plateau (ArrayList uneArrayJoueurs)
+		public Plateau (LinkedList<Joueur> uneArrayJoueurs)
         {
 			joueurs = uneArrayJoueurs;
 
@@ -55,7 +55,7 @@ namespace monopoly {
 				case "propriete":
 					switch (propCase [1]) {
 					case "terrain":
-						cases.AddLast(new Terrain(groupes[propCase[2]],int.Parse(propCase[3]),propCase[4],int.Parse(propCase[5]),int.Parse(propCase[6]),int.Parse(propCase[7]),int.Parse(propCase[8]),int.Parse(propCase[9]),int.Parse(propCase[10]),int.Parse(propCase[10]),int.Parse(propCase[10]),int.Parse(propCase[10])));
+						cases.AddLast(new Terrain(groupes[propCase[2]],int.Parse(propCase[3]),propCase[4],int.Parse(propCase[5]),int.Parse(propCase[6]),int.Parse(propCase[7]),int.Parse(propCase[8]),int.Parse(propCase[9]),int.Parse(propCase[10]),int.Parse(propCase[11]),int.Parse(propCase[12])));
 						break;
 					case "gare":
 						cases.AddLast (new Gare (int.Parse (loyerGares [0]), propCase [2], int.Parse (loyerGares [1]), int.Parse (loyerGares [2]), int.Parse (loyerGares [3]), int.Parse (loyerGares [4])));
@@ -85,9 +85,22 @@ namespace monopoly {
             // Avance case par case le joueur sur le plateau
             for (int i = 0; i< nbCases; i++)
             {
-                joueur.setCaseCourante(cases.Find(joueur.getCaseCourante()).Next.Value);
+				if (cases.Find (joueur.getCaseCourante ()).Next == null) {
+					// Donner de l'argent car pasage sur la case départ
+					joueur.crediter(200); // modifier constante dans fichier de config
+					joueur.setCaseCourante (cases.First.Value);
+				}
+				else
+					joueur.setCaseCourante(cases.Find(joueur.getCaseCourante()).Next.Value);
             }
         }
+
+		// Permet de savoir qui est le joueur suivant
+		public Joueur getJoueurSuivant(Joueur unJoueur) {
+			if (joueurs.Find (unJoueur).Next == null)
+				return joueurs.First.Value;
+			return joueurs.Find(unJoueur).Next.Value;
+		}
 
         //get&set
         public LinkedList<Case> getCases()

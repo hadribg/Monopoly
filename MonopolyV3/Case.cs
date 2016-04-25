@@ -9,7 +9,7 @@ namespace monopoly {
         }
 
 		public override string ToString(){
-			return type + " - ";
+			return type;
 		}
 	}
 

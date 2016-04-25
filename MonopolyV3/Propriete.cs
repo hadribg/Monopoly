@@ -21,7 +21,7 @@ namespace monopoly {
 
 		public override string ToString ()
 		{
-			return genre;
+			return genre +" "+nom;
 		}
 
 	}

@@ -10,6 +10,11 @@ namespace monopoly {
 		public Groupe(string uneCouleur){
 			this.couleur = uneCouleur;
 		}
+
+		// get&set
+		public String getCouleur(){
+			return this.couleur;
+		}
 	}
 
 }

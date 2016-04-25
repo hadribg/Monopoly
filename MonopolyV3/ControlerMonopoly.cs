@@ -1,0 +1,101 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace monopoly
+{
+	class ControlerMonopoly
+	{
+
+		// Créer des instance de joueurs
+		public static LinkedList<Joueur> initJoueurs(){
+			// Demander combien de joueurs
+			Console.WriteLine ("Combien de joueurs physiques ?");
+			int nbPhysiques = int.Parse(Console.ReadLine ());
+			Console.WriteLine ("Combien d'IA ?");
+			int nbIA = int.Parse(Console.ReadLine ());
+
+			// Cas d'invalidités
+			if (nbIA == 0 && nbPhysiques == 0)	throw new Exception("Vous ne pouvez pas jouer sans joueur !");
+			if (nbIA < 0 || nbPhysiques < 0)	throw new Exception ("Erreur : nombre de joueur négatif");
+
+			LinkedList<Joueur> joueurs = new LinkedList<Joueur>();
+			string nom;
+			for (int i = 0; i < nbPhysiques; i++) {
+				Console.WriteLine ("Un nom pour le joueur physique " + (i+1));
+				nom = Console.ReadLine ();
+				joueurs.AddLast(new Physique (nom));
+			}
+			for (int i = 0; i < nbIA; i++) {
+				joueurs.AddLast(new IA("un panda moqueur"));
+			}
+			Console.WriteLine ("Joueurs créés");
+			return joueurs;
+		}
+
+		// Simule un lancer de dés
+		public static int lancerDes(){
+			Random rnd = new Random();
+			// Simule deux entiers pour mieux respecter les probabilités
+			int de1 = rnd.Next(6)+1;
+			int de2 = rnd.Next(6)+1;
+			return de1+de2;
+		}
+
+		// Simuler un lancer de des par joueur et retourner le joueur qui a fait le meilleur score
+		public static Joueur determinerPremier(LinkedList<Joueur> joueurs){
+			Joueur premier= joueurs.First.Value;
+			int max=0;
+			int score=0;
+
+			foreach (Joueur j in joueurs) {
+				score = lancerDes ();
+				Console.WriteLine (j.getNom () + " a lancé les dés, il a fait " + score);
+				Console.ReadKey ();
+				if (score > max) {
+					premier = j;
+					max = score;
+				}
+			}
+			Console.WriteLine (premier.getNom () + " commence à jouer");
+			Console.ReadKey ();
+			return premier;
+		}
+			
+		static void Main(string[] args)
+		{
+			// Initialiser les joueurs
+			LinkedList<Joueur> joueurs = initJoueurs ();
+
+			// Créer le plateau de jeu qui sera le modèle
+			Plateau plateau = new Plateau(joueurs);
+
+			// Déterminer le premier joueur
+			Joueur joueurCourant = determinerPremier(joueurs);
+
+			// début de la partie
+			int score;
+			while (joueurs.Count != 1) {
+				score = lancerDes ();
+				Console.WriteLine (joueurCourant.getNom () + " a lancé les dés, il a fait " + score);
+				Console.ReadKey ();
+				plateau.SeDeplacer (score, joueurCourant);
+				Console.WriteLine (joueurCourant.getNom () + " se déplace");
+				Console.ReadKey ();
+				Console.WriteLine (joueurCourant.getNom () + " est sur la case " + joueurCourant.getCaseCourante ());
+				Console.ReadKey ();
+				joueurCourant = plateau.getJoueurSuivant (joueurCourant);
+				Console.WriteLine ("Au tour de " + joueurCourant.getNom ());
+				Console.ReadKey ();
+			}
+			// TESTPART
+			LinkedList<Case> cases = plateau.getCases();
+			foreach (Case c in cases){
+				Console.WriteLine(c.ToString());
+			}
+		}
+	}
+}

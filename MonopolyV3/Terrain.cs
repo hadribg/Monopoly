@@ -12,7 +12,7 @@ namespace monopoly {
 		private int prixHotel;
 		private Groupe groupe;
 
-		public Terrain(Groupe unGroupe, int unPrix, string unNom, int l0, int l1, int l2, int l3, int l4, int lh, int hypo, int prixM, int prixH)
+		public Terrain(Groupe unGroupe, int unPrix, string unNom, int l0, int l1, int l2, int l3, int l4, int lh, int prixM, int prixH)
 			:base("terrain",unPrix,unNom){
 
 			loyerTerrain = l0;
@@ -21,10 +21,15 @@ namespace monopoly {
 			loyer3maisons = l3;
 			loyer4maisons = l4;
 			loyerHotel = lh;
-			valeurHypothecaire = hypo;
+			valeurHypothecaire = unPrix/2;
 			prixMaison = prixM;
 			prixHotel = prixH;
 			groupe = unGroupe;
+		}
+
+		public override string ToString ()
+		{
+			return genre +" "+groupe.getCouleur()+" "+nom;
 		}
 
 	}
