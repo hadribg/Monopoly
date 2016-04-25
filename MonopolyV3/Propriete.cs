@@ -19,6 +19,11 @@ namespace monopoly {
 			this.proprietaire = acheteur;
 		}
 
+		public override string ToString ()
+		{
+			return genre;
+		}
+
 	}
 
 }

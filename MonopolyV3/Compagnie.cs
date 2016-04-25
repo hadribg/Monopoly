@@ -6,6 +6,11 @@ namespace monopoly {
 			: base ("compagnie",unPrix,unNom){
 
 		}
+
+		public override string ToString ()
+		{
+			return this.genre;
+		}
 	}
 
 }

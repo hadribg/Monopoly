@@ -35,7 +35,7 @@ namespace monopoly {
 
 				switch (propCase [0]) {
 				case "depart":
-					cases.AddLast (new Depart ());
+					cases.AddLast (new Depart());
 					break;
 				case "communaute":
 					cases.AddLast (new Communaute());
@@ -55,7 +55,7 @@ namespace monopoly {
 				case "propriete":
 					switch (propCase [1]) {
 					case "terrain":
-						cases.AddLast(new Terrain(groupes[propCase[2]],int.Parse(propCase[3]),propCase[4],int.Parse(propCase[5]),int.Parse(propCase[6]),int.Parse(propCase[7]),int.Parse(propCase[8]),int.Parse(propCase[9]),int.Parse(propCase[10]),int.Parse(propCase[11]),int.Parse(propCase[12]),int.Parse(propCase[13])));
+						cases.AddLast(new Terrain(groupes[propCase[2]],int.Parse(propCase[3]),propCase[4],int.Parse(propCase[5]),int.Parse(propCase[6]),int.Parse(propCase[7]),int.Parse(propCase[8]),int.Parse(propCase[9]),int.Parse(propCase[10]),int.Parse(propCase[10]),int.Parse(propCase[10]),int.Parse(propCase[10])));
 						break;
 					case "gare":
 						cases.AddLast (new Gare (int.Parse (loyerGares [0]), propCase [2], int.Parse (loyerGares [1]), int.Parse (loyerGares [2]), int.Parse (loyerGares [3]), int.Parse (loyerGares [4])));
