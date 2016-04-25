@@ -1,16 +1,27 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace MonopolyV3
+namespace monopoly
 {
-	class MainClass
+	class Program
 	{
-		public static void Main (string[] args)
+		static void Main(string[] args)
 		{
-			// coucou
-			// hey
-			Console.WriteLine ("Helloo World!");
-			//toi
-			//hehe
+			Physique j1 = new Physique ("Hadrien");
+			IA i1  = new IA("un panda moqueur");
+			ArrayList joueurs = new ArrayList();
+			joueurs.Add (j1);
+			joueurs.Add (i1);
+
+			Plateau plateau = new Plateau(joueurs);
+			LinkedList<Case> cases = plateau.getCases();
+			foreach (Case c in cases){
+				Console.WriteLine(c.ToString());
+			}
 		}
 	}
 }
