@@ -51,10 +51,11 @@
     <Compile Include="Parc.cs" />
     <Compile Include="Depart.cs" />
     <Compile Include="ControlerMonopoly.cs" />
+    <Compile Include="DemoMonopoly.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="cases.txt" />
     <None Include="App.config" />
+    <None Include="cases.csv" />
   </ItemGroup>
 </Project>

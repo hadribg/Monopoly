@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace monopoly
 {
@@ -16,13 +17,15 @@ namespace monopoly
 			Console.WriteLine ("Combien de joueurs physiques ?");
 			int nbPhysiques = int.Parse(Console.ReadLine ());
 			Console.WriteLine ("Combien d'IA ?");
-			int nbIA = int.Parse(Console.ReadLine ());
+			int nbIA = 0;// int.Parse(Console.ReadLine ());
 
 			// Cas d'invalidités
 			if (nbIA == 0 && nbPhysiques == 0)	throw new Exception("Vous ne pouvez pas jouer sans joueur !");
 			if (nbIA < 0 || nbPhysiques < 0)	throw new Exception ("Erreur : nombre de joueur négatif");
 
 			LinkedList<Joueur> joueurs = new LinkedList<Joueur>();
+
+			// Demander les noms
 			string nom;
 			for (int i = 0; i < nbPhysiques; i++) {
 				Console.WriteLine ("Un nom pour le joueur physique " + (i+1));
@@ -32,6 +35,7 @@ namespace monopoly
 			for (int i = 0; i < nbIA; i++) {
 				joueurs.AddLast(new IA("un panda moqueur"));
 			}
+
 			Console.WriteLine ("Joueurs créés");
 			return joueurs;
 		}
@@ -64,22 +68,34 @@ namespace monopoly
 			Console.ReadKey ();
 			return premier;
 		}
-			
-		static void Main(string[] args)
-		{
+
+		// Test pattern Observer
+		public static void joueurADecouvert(Joueur j,int argent){
+			Console.WriteLine (j.getNom()+" a découvert de " + argent+"€ ");
+			Thread.Sleep(3000);
+			Console.WriteLine ("coucou");
+		}
+
+		public static void joueurADecouvert(){
+			Console.WriteLine (" a découvert de ");
+			Thread.Sleep(3000);
+			Console.WriteLine ("coucou");
+		}
+
+		public void run() {
 			// Initialiser les joueurs
-			LinkedList<Joueur> joueurs = initJoueurs ();
+			LinkedList<Joueur> joueurs = ControlerMonopoly.initJoueurs ();
 
 			// Créer le plateau de jeu qui sera le modèle
 			Plateau plateau = new Plateau(joueurs);
 
 			// Déterminer le premier joueur
-			Joueur joueurCourant = determinerPremier(joueurs);
+			Joueur joueurCourant = ControlerMonopoly.determinerPremier(joueurs);
 
 			// début de la partie
 			int score;
 			while (joueurs.Count != 1) {
-				score = lancerDes ();
+				score = ControlerMonopoly.lancerDes();
 				Console.WriteLine (joueurCourant.getNom () + " a lancé les dés, il a fait " + score);
 				Console.ReadKey ();
 				plateau.SeDeplacer (score, joueurCourant);
@@ -87,6 +103,10 @@ namespace monopoly
 				Console.ReadKey ();
 				Console.WriteLine (joueurCourant.getNom () + " est sur la case " + joueurCourant.getCaseCourante ());
 				Console.ReadKey ();
+				joueurCourant.debiter (500);
+				Console.WriteLine (joueurCourant.getNom () + " a " + joueurCourant.getArgent ()+"€");
+				Console.ReadKey ();
+
 				joueurCourant = plateau.getJoueurSuivant (joueurCourant);
 				Console.WriteLine ("Au tour de " + joueurCourant.getNom ());
 				Console.ReadKey ();
@@ -98,4 +118,5 @@ namespace monopoly
 			}
 		}
 	}
+
 }

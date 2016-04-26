@@ -15,7 +15,7 @@ namespace monopoly {
 			joueurs = uneArrayJoueurs;
 
             System.Text.Encoding encoding = System.Text.Encoding.GetEncoding("iso-8859-1");
-            StreamReader monStreamReader = new StreamReader("../../cases.txt", encoding);
+            StreamReader monStreamReader = new StreamReader("../../cases.csv", encoding);
 
 			// Chargement du loyer des gares
 			string[] loyerGares = monStreamReader.ReadLine().Split(new char[] { ',' });
@@ -101,7 +101,7 @@ namespace monopoly {
 				return joueurs.First.Value;
 			return joueurs.Find(unJoueur).Next.Value;
 		}
-
+			
         //get&set
         public LinkedList<Case> getCases()
         {

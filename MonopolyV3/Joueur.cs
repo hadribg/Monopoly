@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+
 namespace monopoly {
 	public abstract class Joueur {
 		private String nom;
@@ -12,7 +15,7 @@ namespace monopoly {
 
 		// Vrai si le joueur peut payer la somme, faux sinon
 		public bool peutPayer(int somme){
-			if (this.getArgent() > somme)
+			if (this.getArgent() >= somme)
 				return true;
 			return false;
 		}
@@ -22,10 +25,7 @@ namespace monopoly {
 			// Cas d'invalidité
 			if (somme < 0)	throw new Exception("Somme invalide");
 
-			if (this.peutPayer(somme))
-				this.setArgent (this.getArgent () - somme);
-			else
-				throw new Exception (this.getNom () + " n'a pas assez d'argent");
+			this.setArgent (this.getArgent () - somme);
 		}
 
 		// Permet à la banque de verser somme à un joueur, somme > 0
@@ -40,11 +40,13 @@ namespace monopoly {
 			// Cas d'invalidité
 			if (somme < 0)	throw new Exception("Somme invalide");
 
-			if (debite.peutPayer (somme)) {
-				debite.debiter (somme);
-				credite.crediter (somme);
-			} else
-				throw new Exception (this.getNom () + " n'a pas assez d'argent");
+			debite.debiter (somme);
+			credite.crediter (somme);
+		}
+
+		// test observer
+		public void notifyObserver(int argent){
+			ControlerMonopoly.joueurADecouvert (this, argent);
 		}
 			
         // get&set
@@ -59,6 +61,8 @@ namespace monopoly {
         public void setArgent(int somme)
         {
             this.argent = somme;
+			if (argent < 0)
+				notifyObserver (argent);
         }
         public int getArgent()
         {
