@@ -111,6 +111,7 @@ namespace monopoly
 				Console.WriteLine ("Au tour de " + joueurCourant.getNom ());
 				Console.ReadKey ();
 			}
+			// cocuou
 			// TESTPART
 			LinkedList<Case> cases = plateau.getCases();
 			foreach (Case c in cases){
