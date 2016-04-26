@@ -17,6 +17,9 @@ namespace monopoly
 		static void Main(string[] args)
 		{
 
+
+
+
 			// Création du controler
 			ControlerMonopoly controler = new ControlerMonopoly();
 
@@ -28,7 +31,7 @@ namespace monopoly
 			filPrincipal.Start();
 
 		}
-		// boloss
+
 	}
 }
 
