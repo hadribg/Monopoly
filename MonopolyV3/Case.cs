@@ -11,6 +11,9 @@ namespace monopoly {
 		public override string ToString(){
 			return type;
 		}
+
+		public string getType() { return type; }
+
 	}
 
 }

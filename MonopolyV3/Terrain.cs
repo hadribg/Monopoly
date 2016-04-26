@@ -32,6 +32,8 @@ namespace monopoly {
 			return genre +" "+groupe.getCouleur()+" "+nom;
 		}
 
+		public Groupe getGroupe(){return groupe;}
+
 	}
 
 }

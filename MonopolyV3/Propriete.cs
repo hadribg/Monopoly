@@ -19,6 +19,10 @@ namespace monopoly {
 			this.proprietaire = acheteur;
 		}
 
+		public string getGenre() {return genre;}
+		public int getPrix()     {return prix;}
+		public string getNom()   {return nom;}
+
 		public override string ToString ()
 		{
 			return genre +" "+nom;

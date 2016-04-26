@@ -16,8 +16,9 @@ namespace monopoly
 
 		static void Main(string[] args)
 		{
-
-
+			Terrain t = new Terrain (new Groupe ("bleu"), 140, "rue de la paix", 1, 2, 3, 4, 5, 5, 6, 7);
+			vueMonopoly.dessinerCase (t);
+			Console.ReadKey ();
 
 
 			// Création du controler

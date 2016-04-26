@@ -52,6 +52,7 @@
     <Compile Include="Depart.cs" />
     <Compile Include="ControlerMonopoly.cs" />
     <Compile Include="DemoMonopoly.cs" />
+    <Compile Include="vueMonopoly.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
