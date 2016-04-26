@@ -28,6 +28,7 @@ namespace monopoly
 			filPrincipal.Start();
 
 		}
+		// boloss
 	}
 }
 
