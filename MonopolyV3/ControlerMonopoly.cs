@@ -36,8 +36,12 @@ namespace monopoly
 				Console.ReadKey ();
 				Console.WriteLine (joueurCourant.getNom () + " est sur la case " + joueurCourant.getCaseCourante ());
 				Console.ReadKey ();
-				joueurCourant.debiter (500);
-				Console.WriteLine (joueurCourant.getNom () + " a " + joueurCourant.getArgent ()+"€");
+				if (joueurCourant.getCaseCourante ().getType () == "propriete") {
+					Console.WriteLine ("Voulez vous acheter cette propriete ? o/n");
+					if (Console.ReadLine () == "o") {
+						joueurCourant.acheter ((Propriete)joueurCourant.getCaseCourante ());
+					}
+				}				Console.WriteLine (joueurCourant.getNom () + " a " + joueurCourant.getArgent ()+"€");
 				Console.ReadKey ();
 
 				joueurCourant = plateau.getJoueurSuivant (joueurCourant);
@@ -54,6 +58,7 @@ namespace monopoly
 
 		// Créer des instance de joueurs
 		public static LinkedList<Joueur> initJoueurs(){
+			/*
 			// Demander combien de joueurs
 			Console.WriteLine ("Combien de joueurs physiques ?");
 			int nbPhysiques = int.Parse(Console.ReadLine ());
@@ -78,7 +83,13 @@ namespace monopoly
 			}
 
 			Console.WriteLine ("Joueurs créés");
+			*/
+			LinkedList<Joueur> joueurs = new LinkedList<Joueur>();
+			joueurs.AddLast (new Physique("Hadrien"));
+			joueurs.AddLast (new Physique("Hadrien"));
+
 			return joueurs;
+
 		}
 
 		// Simule un lancer de dés
@@ -122,7 +133,7 @@ namespace monopoly
 			Thread.Sleep(3000);
 			Console.WriteLine ("coucou");
 		}
-			
+
 	}
 
 }

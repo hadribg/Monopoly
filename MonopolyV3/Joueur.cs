@@ -57,7 +57,7 @@ namespace monopoly {
 			if (p.getProprietaire() != this)	throw new Exception("Cette propriété n'est pas à vous, vous ne pouvez pas l'hypothequer");
 
 			this.crediter (p.getValeurHypothecaire());
-			p.estHypothequee(true):
+			p.setHypotheque(true);
 		}
 
 		// Permettre à un joueur de vendre sa propriété à un autre joueur à un prix p

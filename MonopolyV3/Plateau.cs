@@ -11,16 +11,16 @@ namespace monopoly {
 		private Dictionary<string,Groupe> groupes = new Dictionary<string,Groupe>();
 
 		public Plateau (LinkedList<Joueur> uneArrayJoueurs)
-        {
+		{
 			joueurs = uneArrayJoueurs;
 
-            System.Text.Encoding encoding = System.Text.Encoding.GetEncoding("iso-8859-1");
-            StreamReader monStreamReader = new StreamReader("../../cases.csv", encoding);
+			System.Text.Encoding encoding = System.Text.Encoding.GetEncoding("iso-8859-1");
+			StreamReader monStreamReader = new StreamReader("../../cases.csv", encoding);
 
 			// Chargement du loyer des gares
 			string[] loyerGares = monStreamReader.ReadLine().Split(new char[] { ',' });
 
-			// Chargement du des diffÈrents groupes
+			// Chargement du des diff»rents groupes
 			string[] couleurs = monStreamReader.ReadLine().Split(new char[] { ',' });
 			for (int i = 0; i < couleurs.Length; i++)
 				groupes.Add(couleurs[i],new Groupe(couleurs[i]));
@@ -30,7 +30,7 @@ namespace monopoly {
 			string[] propCase = chaineCase.Split(new char[] { ',' });
 
 			while (chaineCase != null)
-            {
+			{
 				propCase = chaineCase.Split(new char[] { ',' });
 
 				switch (propCase [0]) {
@@ -67,33 +67,33 @@ namespace monopoly {
 					break;
 				}
 				chaineCase = monStreamReader.ReadLine();
-            }
-            // Fermeture du StreamReader
-            monStreamReader.Close();
+			}
+			// Fermeture du StreamReader
+			monStreamReader.Close();
 
-			// Placer les joueurs sur la case dÈpart
+			// Placer les joueurs sur la case d»part
 			foreach (Joueur j in joueurs) {
 				j.setCaseCourante (cases.First.Value);
 			}
-        }
+		}
 
-        // Permet ‡ un joueur de se dÈplacer de nbCases cases sur le plateau
-        public void SeDeplacer(int nbCases, Joueur joueur) {
-            // Cas d'invaliditÈ
-            if (nbCases < 1 || nbCases > 12) throw new Exception("Nombre de case incohÈrent");
+		// Permet á un joueur de se d»placer de nbCases cases sur le plateau
+		public void SeDeplacer(int nbCases, Joueur joueur) {
+			// Cas d'invalidit»
+			if (nbCases < 1 || nbCases > 12) throw new Exception("Nombre de case incoh»rent");
 
-            // Avance case par case le joueur sur le plateau
-            for (int i = 0; i< nbCases; i++)
-            {
+			// Avance case par case le joueur sur le plateau
+			for (int i = 0; i< nbCases; i++)
+			{
 				if (cases.Find (joueur.getCaseCourante ()).Next == null) {
-					// Donner de l'argent car pasage sur la case dÈpart
+					// Donner de l'argent car pasage sur la case d»part
 					joueur.crediter(200); // modifier constante dans fichier de config
 					joueur.setCaseCourante (cases.First.Value);
 				}
 				else
 					joueur.setCaseCourante(cases.Find(joueur.getCaseCourante()).Next.Value);
-            }
-        }
+			}
+		}
 
 		// Permet de savoir qui est le joueur suivant
 		public Joueur getJoueurSuivant(Joueur unJoueur) {
@@ -101,16 +101,16 @@ namespace monopoly {
 				return joueurs.First.Value;
 			return joueurs.Find(unJoueur).Next.Value;
 		}
-			
-        //get&set
-        public LinkedList<Case> getCases()
-        {
-            return this.cases;
-        }
+
+		//get&set
+		public LinkedList<Case> getCases()
+		{
+			return this.cases;
+		}
 		public LinkedList<Joueur> getJoueurs()	{
 			return joueurs;
 		}
 
-    }
+	}
 
 }

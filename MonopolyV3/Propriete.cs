@@ -34,9 +34,10 @@ namespace monopoly {
 		public int getPrix()     				{return prix;}
 		public string getNom()   				{return nom;}
 		public Joueur getProprietaire()   		{return proprietaire;}
-		public bool estHypothequee()			{return estHypothequee;}
-		public int getValeurHypothecaire()		{return valeurHypothecaire:}
+		public bool getHypothequee()			{return estHypothequee;}
+		public int getValeurHypothecaire()		{return valeurHypothecaire;}
 		public void setProprietaire(Joueur j)	{this.proprietaire = j;}
+		public void setHypotheque(bool h)		{this.estHypothequee = h;}
 
 		public override string ToString ()
 		{

@@ -7,6 +7,7 @@ namespace monopoly {
 		private int loyer3maisons;
 		private int loyer4maisons;
 		private int loyerHotel;
+		private int valeurHypothecaire;
 		private int prixMaison;
 		private int prixHotel;
 		private Groupe groupe;
@@ -20,6 +21,7 @@ namespace monopoly {
 			loyer3maisons = l3;
 			loyer4maisons = l4;
 			loyerHotel = lh;
+			valeurHypothecaire = unPrix/2;
 			prixMaison = prixM;
 			prixHotel = prixH;
 			groupe = unGroupe;
