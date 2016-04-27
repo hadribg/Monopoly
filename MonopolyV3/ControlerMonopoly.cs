@@ -10,6 +10,47 @@ namespace monopoly
 {
 	class ControlerMonopoly
 	{
+		private Plateau plateau;
+		private vueMonopoly view;
+
+		public ControlerMonopoly() {
+			// Initialiser les joueurs
+			// Créer le plateau de jeu qui sera le modèle
+			this.plateau = new Plateau(ControlerMonopoly.initJoueurs ());
+			this.view = new vueMonopoly ();
+		}
+
+		public void run() {
+
+			// Déterminer le premier joueur
+			Joueur joueurCourant = ControlerMonopoly.determinerPremier(this.plateau.getJoueurs());
+
+			// début de la partie
+			int score;
+			while (this.plateau.getJoueurs().Count != 1) {
+				score = ControlerMonopoly.lancerDes();
+				Console.WriteLine (joueurCourant.getNom () + " a lancé les dés, il a fait " + score);
+				Console.ReadKey ();
+				plateau.SeDeplacer (score, joueurCourant);
+				Console.WriteLine (joueurCourant.getNom () + " se déplace");
+				Console.ReadKey ();
+				Console.WriteLine (joueurCourant.getNom () + " est sur la case " + joueurCourant.getCaseCourante ());
+				Console.ReadKey ();
+				joueurCourant.debiter (500);
+				Console.WriteLine (joueurCourant.getNom () + " a " + joueurCourant.getArgent ()+"€");
+				Console.ReadKey ();
+
+				joueurCourant = plateau.getJoueurSuivant (joueurCourant);
+				Console.WriteLine ("Au tour de " + joueurCourant.getNom ());
+				Console.ReadKey ();
+			}
+			// cocuou
+			// TESTPART
+			LinkedList<Case> cases = plateau.getCases();
+			foreach (Case c in cases){
+				Console.WriteLine(c.ToString());
+			}
+		}
 
 		// Créer des instance de joueurs
 		public static LinkedList<Joueur> initJoueurs(){
@@ -81,43 +122,7 @@ namespace monopoly
 			Thread.Sleep(3000);
 			Console.WriteLine ("coucou");
 		}
-
-		public void run() {
-			// Initialiser les joueurs
-			LinkedList<Joueur> joueurs = ControlerMonopoly.initJoueurs ();
-
-			// Créer le plateau de jeu qui sera le modèle
-			Plateau plateau = new Plateau(joueurs);
-
-			// Déterminer le premier joueur
-			Joueur joueurCourant = ControlerMonopoly.determinerPremier(joueurs);
-
-			// début de la partie
-			int score;
-			while (joueurs.Count != 1) {
-				score = ControlerMonopoly.lancerDes();
-				Console.WriteLine (joueurCourant.getNom () + " a lancé les dés, il a fait " + score);
-				Console.ReadKey ();
-				plateau.SeDeplacer (score, joueurCourant);
-				Console.WriteLine (joueurCourant.getNom () + " se déplace");
-				Console.ReadKey ();
-				Console.WriteLine (joueurCourant.getNom () + " est sur la case " + joueurCourant.getCaseCourante ());
-				Console.ReadKey ();
-				joueurCourant.debiter (500);
-				Console.WriteLine (joueurCourant.getNom () + " a " + joueurCourant.getArgent ()+"€");
-				Console.ReadKey ();
-
-				joueurCourant = plateau.getJoueurSuivant (joueurCourant);
-				Console.WriteLine ("Au tour de " + joueurCourant.getNom ());
-				Console.ReadKey ();
-			}
-			// cocuou
-			// TESTPART
-			LinkedList<Case> cases = plateau.getCases();
-			foreach (Case c in cases){
-				Console.WriteLine(c.ToString());
-			}
-		}
+			
 	}
 
 }

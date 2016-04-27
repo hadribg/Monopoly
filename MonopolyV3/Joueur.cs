@@ -11,7 +11,7 @@ namespace monopoly {
 		public Joueur(string unNom){
 			nom = unNom;
 			argent = 1500;
-		}
+		} 
 
 		// Vrai si le joueur peut payer la somme, faux sinon
 		public bool peutPayer(int somme){
@@ -36,12 +36,37 @@ namespace monopoly {
 		}
 
 		// Echange d'argent entre 2 joueurs
-		public void transaction(Joueur debite, Joueur credite, int somme){
+		public void transaction(Joueur credite, int somme){
 			// Cas d'invalidité
 			if (somme < 0)	throw new Exception("Somme invalide");
 
-			debite.debiter (somme);
+			this.debiter (somme);
 			credite.crediter (somme);
+		}
+
+		// Permettre à un joueur d'acheter une propriété
+		public void acheter(Propriete p){
+			this.debiter (p.getPrix ());
+			p.setProprietaire (this); 
+		}
+
+		// Hypothequer une maison à la banque pour gagner un peu d'argent.
+		// Impossible de percevoir un loyer d'un propriété hypothequée.
+		public void hypothequer (Propriete p) {
+			// Cas d'invalidité
+			if (p.getProprietaire() != this)	throw new Exception("Cette propriété n'est pas à vous, vous ne pouvez pas l'hypothequer");
+
+			this.crediter (p.getValeurHypothecaire());
+			p.estHypothequee(true):
+		}
+
+		// Permettre à un joueur de vendre sa propriété à un autre joueur à un prix p
+		public void vendre(Propriete p, Joueur j, int somme){
+			// Cas d'invalidité
+			if (p.getProprietaire() != this)	throw new Exception("Cette propriété n'est pas à vous, vous ne pouvez pas la vendre");
+
+			p.setProprietaire (j);
+			j.transaction (this, somme);
 		}
 
 		// test observer

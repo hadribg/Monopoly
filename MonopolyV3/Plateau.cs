@@ -107,6 +107,9 @@ namespace monopoly {
         {
             return this.cases;
         }
+		public LinkedList<Joueur> getJoueurs()	{
+			return joueurs;
+		}
 
     }
 
