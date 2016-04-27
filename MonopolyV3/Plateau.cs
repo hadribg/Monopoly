@@ -46,8 +46,8 @@ namespace monopoly {
 				case "prison":
 					cases.AddLast (new Prison());
 					break;
-				case "parc":
-					cases.AddLast (new Parc());
+				case "caseNeutre":
+					cases.AddLast (new CaseNeutre(propCase[1]));
 					break;
 				case "impot":
 					cases.AddLast (new Impot(propCase[1],int.Parse(propCase[2])));
@@ -71,16 +71,16 @@ namespace monopoly {
 			// Fermeture du StreamReader
 			monStreamReader.Close();
 
-			// Placer les joueurs sur la case d»part
+			// Placer les joueurs sur la case depart
 			foreach (Joueur j in joueurs) {
 				j.setCaseCourante (cases.First.Value);
 			}
 		}
 
-		// Permet á un joueur de se d»placer de nbCases cases sur le plateau
-		public void SeDeplacer(int nbCases, Joueur joueur) {
-			// Cas d'invalidit»
-			if (nbCases < 1 || nbCases > 12) throw new Exception("Nombre de case incoh»rent");
+		// Permet ‡ un joueur de se deplacer de nbCases cases sur le plateau suite ‡ un lancer de des
+		public void avancer(int nbCases, Joueur joueur) {
+			// Cas d'invalidite
+			if (nbCases < 1 || nbCases > 12) throw new Exception("Nombre de cases incoherent");
 
 			// Avance case par case le joueur sur le plateau
 			for (int i = 0; i< nbCases; i++)
@@ -93,6 +93,61 @@ namespace monopoly {
 				else
 					joueur.setCaseCourante(cases.Find(joueur.getCaseCourante()).Next.Value);
 			}
+		}
+
+		// Permet ‡ un joueur j d'avancer jusqu'‡ la case c
+		public void avancer(Case c, Joueur j) {
+			// ContrÙle de la validitÈ du paramËtre
+			if (c == null) throw new Exception("Cases incoherente");
+
+			// Avance case par case le joueur sur le plateau
+			do {
+				if (cases.Find (j.getCaseCourante ()).Next == null) {
+					// Donner de l'argent car pasage sur la case d»part
+					j.crediter (200); // modifier constante dans fichier de config
+					j.setCaseCourante (cases.First.Value);
+				} else
+					j.setCaseCourante (cases.Find (j.getCaseCourante ()).Next.Value);
+			} while  (!j.getCaseCourante ().Equals (c));
+		}
+
+		public void reculer(int nbCases, Joueur joueur) {
+			// Cas d'invalidite
+			if (nbCases < 1) throw new Exception("Nombre de cases incohÈrent");
+
+			// recule case par case le joueur sur le plateau
+			for (int i = 0; i< nbCases; i++)
+			{
+				// Cas de la case depart
+				if (cases.Find (joueur.getCaseCourante ()).Previous == null) {
+					joueur.setCaseCourante (cases.Last.Value);
+				}
+				else
+					joueur.setCaseCourante(cases.Find(joueur.getCaseCourante()).Previous.Value);
+			}
+		} 
+
+		public void reculer(Case c, Joueur j) {
+			// ContrÙle de la validitÈ du paramËtre
+			if (c == null) throw new Exception("Cases incoherente");
+
+			// Cas o˘ on est sur la case dÈpart et qu'on recule
+			// On ne reÁoit pas une deuxiËme fois les sous
+			Case departTest = new Case("depart");
+			if (j.getCaseCourante().Equals(departTest)){
+				if(!c.Equals(departTest))
+					j.setCaseCourante (cases.Last.Value);
+			}
+
+			// Avance case par case le joueur sur le plateau
+			do {
+				if (cases.Find (j.getCaseCourante ()).Previous == null) {
+					// Donner de l'argent car pasage sur la case d»part
+					j.crediter (200); // modifier constante dans fichier de config
+					j.setCaseCourante (cases.Last.Value);
+				} else
+					j.setCaseCourante (cases.Find (j.getCaseCourante ()).Previous.Value);
+			} while (!j.getCaseCourante ().Equals (c));
 		}
 
 		// Permet de savoir qui est le joueur suivant

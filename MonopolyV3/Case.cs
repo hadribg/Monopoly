@@ -14,6 +14,13 @@ namespace monopoly {
 
 		public string getType() { return type; }
 
+		public bool Equals (Case c)
+		{
+			if (this.type == c.type)
+				return true;
+			return false;
+		}
+
 	}
 
 }

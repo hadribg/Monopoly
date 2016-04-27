@@ -33,6 +33,7 @@ namespace monopoly {
 			// Cas d'invalidité
 			if (somme < 0)	throw new Exception("Somme invalide");
 			this.setArgent(this.getArgent()+somme);
+			Console.WriteLine ("Passage à la case départ : +200€");
 		}
 
 		// Echange d'argent entre 2 joueurs

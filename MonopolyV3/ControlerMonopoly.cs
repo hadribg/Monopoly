@@ -29,9 +29,10 @@ namespace monopoly
 			int score;
 			while (this.plateau.getJoueurs().Count != 1) {
 				score = ControlerMonopoly.lancerDes();
+				Case c = new Case("prison");
 				Console.WriteLine (joueurCourant.getNom () + " a lancé les dés, il a fait " + score);
 				Console.ReadKey ();
-				plateau.SeDeplacer (score, joueurCourant);
+				plateau.reculer(c, joueurCourant);
 				Console.WriteLine (joueurCourant.getNom () + " se déplace");
 				Console.ReadKey ();
 				Console.WriteLine (joueurCourant.getNom () + " est sur la case " + joueurCourant.getCaseCourante ());
@@ -41,7 +42,8 @@ namespace monopoly
 					if (Console.ReadLine () == "o") {
 						joueurCourant.acheter ((Propriete)joueurCourant.getCaseCourante ());
 					}
-				}				Console.WriteLine (joueurCourant.getNom () + " a " + joueurCourant.getArgent ()+"€");
+				}				
+				Console.WriteLine (joueurCourant.getNom () + " a " + joueurCourant.getArgent ()+"€");
 				Console.ReadKey ();
 
 				joueurCourant = plateau.getJoueurSuivant (joueurCourant);
@@ -86,7 +88,7 @@ namespace monopoly
 			*/
 			LinkedList<Joueur> joueurs = new LinkedList<Joueur>();
 			joueurs.AddLast (new Physique("Hadrien"));
-			joueurs.AddLast (new Physique("Hadrien"));
+			joueurs.AddLast (new Physique("Fanny"));
 
 			return joueurs;
 
