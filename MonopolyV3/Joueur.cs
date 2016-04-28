@@ -70,9 +70,30 @@ namespace monopoly {
 			j.transaction (this, somme);
 		}
 
+		public bool PossedeTousLesTerrains(Groupe g){
+			bool possede = true;
+			ArrayList zone = g.getTerrains ();
+			foreach (Terrain t in zone) {
+				if (!t.getProprietaire ().Equals (this))
+					possede = false;
+			}
+			return possede;
+		}
+
+		public bool PossedeTousLesTerrains(Terrain t){
+			return PossedeTousLesTerrains (t.getGroupe ());
+		}
+
 		// test observer
 		public void notifyObserver(int argent){
 			ControlerMonopoly.joueurADecouvert (this, argent);
+		}
+
+		// Redéfinition Equals
+		public bool Equals(Joueur j){
+			if (this.nom == j.nom)
+				return true;
+			return false;
 		}
 			
         // get&set

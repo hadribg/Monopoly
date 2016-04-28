@@ -8,6 +8,11 @@ namespace monopoly {
             type = unType;
         }
 
+		// Méthode qui s'exécute quand le joueur j s'arrête sur la case
+		public virtual void callback(Joueur j){
+			Console.WriteLine (j.getNom () + " est sur une case");
+		}
+
 		public override string ToString(){
 			return type;
 		}
@@ -20,7 +25,6 @@ namespace monopoly {
 				return true;
 			return false;
 		}
-
 	}
 
 }

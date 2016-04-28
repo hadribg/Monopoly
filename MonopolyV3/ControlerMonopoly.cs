@@ -29,20 +29,18 @@ namespace monopoly
 			int score;
 			while (this.plateau.getJoueurs().Count != 1) {
 				score = ControlerMonopoly.lancerDes();
-				Case c = new Case("prison");
+				score = 1;
 				Console.WriteLine (joueurCourant.getNom () + " a lancé les dés, il a fait " + score);
 				Console.ReadKey ();
-				plateau.reculer(c, joueurCourant);
+				plateau.avancer(score, joueurCourant);
 				Console.WriteLine (joueurCourant.getNom () + " se déplace");
 				Console.ReadKey ();
 				Console.WriteLine (joueurCourant.getNom () + " est sur la case " + joueurCourant.getCaseCourante ());
 				Console.ReadKey ();
-				if (joueurCourant.getCaseCourante ().getType () == "propriete") {
-					Console.WriteLine ("Voulez vous acheter cette propriete ? o/n");
-					if (Console.ReadLine () == "o") {
-						joueurCourant.acheter ((Propriete)joueurCourant.getCaseCourante ());
-					}
-				}				
+
+				// Effectuer l'action relative à la case courante
+				joueurCourant.getCaseCourante ().callback (joueurCourant);
+
 				Console.WriteLine (joueurCourant.getNom () + " a " + joueurCourant.getArgent ()+"€");
 				Console.ReadKey ();
 
@@ -50,7 +48,7 @@ namespace monopoly
 				Console.WriteLine ("Au tour de " + joueurCourant.getNom ());
 				Console.ReadKey ();
 			}
-			// cocuou
+
 			// TESTPART
 			LinkedList<Case> cases = plateau.getCases();
 			foreach (Case c in cases){
@@ -123,6 +121,13 @@ namespace monopoly
 			return premier;
 		}
 
+		/*
+		 * Méthode void vérifierAction(Joueur)
+		 * Regarder sur quelle case est le joueur j
+		 * --> Demander à la case quelle est son action ?
+		 * Exécuter une action si nécessaire (paiement de loyer
+		 */
+
 		// Test pattern Observer
 		public static void joueurADecouvert(Joueur j,int argent){
 			Console.WriteLine (j.getNom()+" a découvert de " + argent+"€ ");
@@ -131,9 +136,8 @@ namespace monopoly
 		}
 
 		public static void joueurADecouvert(){
-			Console.WriteLine (" a découvert de ");
+			Console.WriteLine ("Joueur à découvert !");
 			Thread.Sleep(3000);
-			Console.WriteLine ("coucou");
 		}
 
 	}

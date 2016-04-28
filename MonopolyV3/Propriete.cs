@@ -39,6 +39,23 @@ namespace monopoly {
 		public void setProprietaire(Joueur j)	{this.proprietaire = j;}
 		public void setHypotheque(bool h)		{this.estHypothequee = h;}
 
+		public override void callback(Joueur j) {
+			
+			if (this.proprietaire == null) {
+				Console.WriteLine ("Voulez vous acheter cette propriete ? o/n");
+				if (Console.ReadLine () == "o") {
+					j.acheter ((Propriete)j.getCaseCourante ());
+				}
+			} else {
+				if (this.proprietaire.Equals (j)) {
+					Console.WriteLine ("Vous êtes chez vous");
+				} else {
+					Console.WriteLine("Payez le loyer");
+					j.transaction(this.proprietaire,j.getCaseCourante().get
+				}
+			}
+		}
+
 		public override string ToString ()
 		{
 			return genre +" "+nom;
