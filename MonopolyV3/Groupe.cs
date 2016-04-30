@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace monopoly {
 	public class Groupe {
 		private String couleur;
-		private ArrayList terrains = new ArrayList();
+		private ArrayList proprietes = new ArrayList();
 
 		public Groupe(string uneCouleur){
 			this.couleur = uneCouleur;
@@ -15,8 +15,8 @@ namespace monopoly {
 		public String getCouleur(){
 			return this.couleur;
 		}
-		public ArrayList getTerrains()	{
-			return terrains;
+		public ArrayList getPropriete()	{
+			return proprietes;
 		}
 	}
 }

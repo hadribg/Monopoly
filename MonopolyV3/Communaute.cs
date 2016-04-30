@@ -6,6 +6,10 @@ namespace monopoly {
 			:base("communaute"){
 		}
 
+		public override void callback(Joueur j, Plateau p) {
+			Console.WriteLine ("Tirez une carte Caisse de Communaute !");
+		}
+
 	}
 
 }

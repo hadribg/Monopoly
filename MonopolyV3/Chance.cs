@@ -6,6 +6,10 @@ namespace monopoly {
 			: base ("chance"){
 
 		}
+
+		public override void callback(Joueur j, Plateau p) {
+			Console.WriteLine ("Tirez une carte chance !");
+		}
 	}
 
 }

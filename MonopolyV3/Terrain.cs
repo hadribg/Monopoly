@@ -14,7 +14,6 @@ namespace monopoly {
 		private int prixMaison;
 		private int prixHotel;
 		private int nbMaison;
-		private Groupe groupe;
 
 		public Terrain(Groupe unGroupe, int unPrix, string unNom, int l0, int l1, int l2, int l3, int l4, int lh, int prixM, int prixH)
 			:base("terrain",unPrix,unNom){
@@ -43,7 +42,7 @@ namespace monopoly {
 			// Cas d'invalidité : il y a déjà les 4 maisons sur le terrain support
 			if (this.getNbMaison()>4)	return false;
 
-			ArrayList zone = this.groupe.getTerrains();
+			ArrayList zone = this.groupe.getPropriete();
 			bool uniforme = true;
 			foreach (Terrain t in zone) {
 				if (t.getNbMaison() != this.getNbMaison() && t.getNbMaison() != (this.getNbMaison()-1))
@@ -68,7 +67,7 @@ namespace monopoly {
 		// Renvoie vrai si il est possible de faire un hotel sur le terrrain support
 		public bool peutConstruireHotel(){
 
-			ArrayList zone = this.groupe.getTerrains();
+			ArrayList zone = this.groupe.getPropriete();
 			bool peutConstruire = true;
 			foreach (Terrain t in zone) {
 				if (t.getNbMaison() != 4)
@@ -86,36 +85,14 @@ namespace monopoly {
 				throw new Exception("Vous ne pouvez pas construire d'hotel sur ce terrain : construisez des maisons sur les autres terrains avant");
 		}
 
-		public int getLoyer(){
-			switch (nbMaison) {
-			case 0:
-				if (proprietaire.PossedeTousLesTerrains (this))
-					return (loyerTerrain * 2);
-				else
-					return loyerTerrain;
-				break;
-			case 1:
-				return loyer1maison;
-				break;
-			case 2:
-				return loyer2maisons;
-				break;
-			case 3:
-				return loyer3maisons;
-				break;
-			case 4:
-				return loyer4maisons;
-				break;
-			case 5:
-				return loyerHotel;
-				break;
-			}
-		}
-
 		// get&set
 		public int getNbMaison()	{return this.nbMaison;}
-		public Groupe getGroupe()	{return groupe;}
-
+		public int getLoyerTerrain()	{return loyerTerrain;}
+		public int getLoyer1maison()	{return loyer1maison;}
+		public int getLoyer2maisons()	{return loyer2maisons;}
+		public int getLoyer3maisons()	{return loyer3maisons;}
+		public int getLoyer4maisons()	{return loyer4maisons;}
+		public int getLoyerHotel()	{return loyerHotel;}
 	}
 
 }

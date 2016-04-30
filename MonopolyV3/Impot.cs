@@ -10,6 +10,11 @@ namespace monopoly {
 			prix = unPrix;
 		}
 
+		public override void callback(Joueur j, Plateau p) {
+			j.debiter (this.prix);
+			Console.WriteLine ("Vous payez les impots");
+		}
+
 	}
 
 }

@@ -7,10 +7,15 @@ namespace monopoly {
 		private String nom;
 		private int argent;
         private Case caseCourante;
+		private int dernierScore;	// Représente la somme aux dés qu'a fait le joueur la dernière fois
+		private int tourEmprisonne;
 
 		public Joueur(string unNom){
 			nom = unNom;
 			argent = 1500;
+			dernierScore = 0;
+			caseCourante = null;
+			tourEmprisonne = 0;
 		} 
 
 		// Vrai si le joueur peut payer la somme, faux sinon
@@ -33,7 +38,6 @@ namespace monopoly {
 			// Cas d'invalidité
 			if (somme < 0)	throw new Exception("Somme invalide");
 			this.setArgent(this.getArgent()+somme);
-			Console.WriteLine ("Passage à la case départ : +200€");
 		}
 
 		// Echange d'argent entre 2 joueurs
@@ -48,7 +52,7 @@ namespace monopoly {
 		// Permettre à un joueur d'acheter une propriété
 		public void acheter(Propriete p){
 			this.debiter (p.getPrix ());
-			p.setProprietaire (this); 
+			p.setProprietaire (this);
 		}
 
 		// Hypothequer une maison à la banque pour gagner un peu d'argent.
@@ -70,14 +74,35 @@ namespace monopoly {
 			j.transaction (this, somme);
 		}
 
-		public bool PossedeTousLesTerrains(Groupe g){
-			bool possede = true;
-			ArrayList zone = g.getTerrains ();
-			foreach (Terrain t in zone) {
-				if (!t.getProprietaire ().Equals (this))
-					possede = false;
+		// Méthode qui renvoit le nombre de propriété du même groupe possédées par le joueur support
+		public int nbProprietePossedees(Groupe g){
+			int possede = 0;
+			ArrayList zone = g.getPropriete ();
+			foreach (Propriete t in zone) {
+				if (t.getProprietaire () != null) {
+					if (t.getProprietaire ().Equals (this))
+						possede++;
+				}
 			}
 			return possede;
+		}
+
+		public int nbProprietePossedees(Propriete p){
+			return nbProprietePossedees (p.getGroupe ());
+		}
+
+		// Renvoie vrai si le joueur support possède tous les terrains du groupe g
+		public bool PossedeTousLesTerrains(Groupe g){
+			ArrayList zone = g.getPropriete ();
+			foreach (Propriete t in zone) {
+				if (t.getProprietaire() == null)
+					return false;
+				
+				if (!t.getProprietaire ().Equals (this))
+					return false;
+
+			}
+			return true;
 		}
 
 		public bool PossedeTousLesTerrains(Terrain t){
@@ -97,26 +122,19 @@ namespace monopoly {
 		}
 			
         // get&set
-        public void setCaseCourante(Case uneCase)
-        {
-            this.caseCourante = uneCase;
-        }
-        public Case getCaseCourante()
-        {
-            return this.caseCourante;
-        }
-        public void setArgent(int somme)
-        {
-            this.argent = somme;
+		public int getScore()						{return this.dernierScore;}
+        public Case getCaseCourante(){return this.caseCourante;}        
+        public int getArgent()						{return this.argent;}
+		public string getNom()						{return this.nom;}
+		public int estEmprisonne()					{return this.tourEmprisonne;}
+
+		public void setScore(int unScore)			{this.dernierScore = unScore;}
+		public void setCaseCourante(Case uneCase)	{this.caseCourante = uneCase;}
+		public void setEmprisonne(int b)			{this.tourEmprisonne = b; }
+		public void setArgent(int somme){
+			this.argent = somme;
 			if (argent < 0)
 				notifyObserver (argent);
-        }
-        public int getArgent()
-        {
-            return this.argent;
-        }
-		public string getNom(){
-			return this.nom;
 		}
 	}
 

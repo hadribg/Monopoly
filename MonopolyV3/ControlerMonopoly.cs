@@ -28,18 +28,38 @@ namespace monopoly
 			// début de la partie
 			int score;
 			while (this.plateau.getJoueurs().Count != 1) {
-				score = ControlerMonopoly.lancerDes();
-				score = 1;
+				joueurCourant.setScore(5/*ControlerMonopoly.lancerDes()*/);
+				score = joueurCourant.getScore ();
 				Console.WriteLine (joueurCourant.getNom () + " a lancé les dés, il a fait " + score);
 				Console.ReadKey ();
-				plateau.avancer(score, joueurCourant);
-				Console.WriteLine (joueurCourant.getNom () + " se déplace");
-				Console.ReadKey ();
-				Console.WriteLine (joueurCourant.getNom () + " est sur la case " + joueurCourant.getCaseCourante ());
-				Console.ReadKey ();
+				if (joueurCourant.estEmprisonne() > 0) {
+					Console.WriteLine (joueurCourant.getNom () + " est en prison depuis " +joueurCourant.estEmprisonne()+" tour.");
+					if (Console.ReadLine () == "o") {
+						Console.WriteLine ("Vous payez 50€ et vous pouvez avancer");
+						joueurCourant.debiter (50);
+						plateau.getPrison ().liberer (joueurCourant);
+					} else {
+						joueurCourant.setEmprisonne (joueurCourant.estEmprisonne () + 1);
+						if (joueurCourant.estEmprisonne () == 4) {
+							Console.WriteLine ("Vous n'avez toujours pas fait de double. vous payez 50€ et vous pouvez avancer");
+							joueurCourant.debiter (50);
+							plateau.getPrison().liberer (joueurCourant);
+						}
+					}
+				}
+				if (joueurCourant.estEmprisonne() == 0) {
+					plateau.avancer (score, joueurCourant);
+					Console.WriteLine (joueurCourant.getNom () + " se déplace");
+					Console.ReadKey ();
+					Console.WriteLine (joueurCourant.getNom () + " est sur la case " + joueurCourant.getCaseCourante ());
+					Console.ReadKey ();
 
-				// Effectuer l'action relative à la case courante
-				joueurCourant.getCaseCourante ().callback (joueurCourant);
+					// Effectuer l'action relative à la case courante
+					joueurCourant.getCaseCourante ().callback (joueurCourant, plateau);
+				}
+				// Fin de tour
+
+				// TODO TEST CONSTRUCTION
 
 				Console.WriteLine (joueurCourant.getNom () + " a " + joueurCourant.getArgent ()+"€");
 				Console.ReadKey ();

@@ -9,7 +9,7 @@ namespace monopoly {
         }
 
 		// Méthode qui s'exécute quand le joueur j s'arrête sur la case
-		public virtual void callback(Joueur j){
+		public virtual void callback(Joueur j, Plateau p){
 			Console.WriteLine (j.getNom () + " est sur une case");
 		}
 

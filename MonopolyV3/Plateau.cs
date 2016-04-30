@@ -9,6 +9,7 @@ namespace monopoly {
 		private LinkedList<Case> cases = new LinkedList<Case>();
 		private LinkedList<Joueur> joueurs = new LinkedList<Joueur>();
 		private Dictionary<string,Groupe> groupes = new Dictionary<string,Groupe>();
+		private Prison prison;
 
 		public Plateau (LinkedList<Joueur> uneArrayJoueurs)
 		{
@@ -44,10 +45,12 @@ namespace monopoly {
 					cases.AddLast (new Chance());
 					break;
 				case "prison":
-					cases.AddLast (new Prison());
+					Prison p = new Prison ();
+					cases.AddLast (p);
+					prison = p;
 					break;
 				case "caseNeutre":
-					cases.AddLast (new CaseNeutre(propCase[1]));
+					cases.AddLast (new CaseNeutre(propCase[0], propCase[1]));
 					break;
 				case "impot":
 					cases.AddLast (new Impot(propCase[1],int.Parse(propCase[2])));
@@ -55,13 +58,19 @@ namespace monopoly {
 				case "propriete":
 					switch (propCase [1]) {
 					case "terrain":
-						cases.AddLast(new Terrain(groupes[propCase[2]],int.Parse(propCase[3]),propCase[4],int.Parse(propCase[5]),int.Parse(propCase[6]),int.Parse(propCase[7]),int.Parse(propCase[8]),int.Parse(propCase[9]),int.Parse(propCase[10]),int.Parse(propCase[11]),int.Parse(propCase[12])));
+						Terrain t = new Terrain (groupes [propCase [2]], int.Parse (propCase [3]), propCase [4], int.Parse (propCase [5]), int.Parse (propCase [6]), int.Parse (propCase [7]), int.Parse (propCase [8]), int.Parse (propCase [9]), int.Parse (propCase [10]), int.Parse (propCase [11]), int.Parse (propCase [12]));
+						cases.AddLast (t);
+						groupes [propCase [2]].getPropriete ().Add (t);
 						break;
 					case "gare":
-						cases.AddLast (new Gare (int.Parse (loyerGares [0]), propCase [2], int.Parse (loyerGares [1]), int.Parse (loyerGares [2]), int.Parse (loyerGares [3]), int.Parse (loyerGares [4])));
+						Gare g = new Gare (groupes[propCase[1]],int.Parse (loyerGares [0]), propCase [2], int.Parse (loyerGares [1]), int.Parse (loyerGares [2]), int.Parse (loyerGares [3]), int.Parse (loyerGares [4]));
+						cases.AddLast (g);
+						groupes [propCase [1]].getPropriete ().Add (g);
 						break;
 					case "compagnie":
-						cases.AddLast (new Compagnie (propCase [2], int.Parse (propCase [3])));
+						Compagnie c = new Compagnie (groupes [propCase [1]], propCase [2], int.Parse (propCase [3]));
+						cases.AddLast (c);
+						groupes [propCase [1]].getPropriete ().Add (c);
 						break;
 					}
 					break;
@@ -157,15 +166,13 @@ namespace monopoly {
 			return joueurs.Find(unJoueur).Next.Value;
 		}
 
-		//get&set
-		public LinkedList<Case> getCases()
-		{
-			return this.cases;
-		}
-		public LinkedList<Joueur> getJoueurs()	{
-			return joueurs;
+		public Prison getPrison(){		
+			return prison;
 		}
 
+		//get&set
+		public LinkedList<Case> getCases()		{return this.cases;}
+		public LinkedList<Joueur> getJoueurs()	{return joueurs;}
 	}
 
 }

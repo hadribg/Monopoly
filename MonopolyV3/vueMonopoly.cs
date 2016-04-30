@@ -97,43 +97,111 @@ namespace monopoly
 				Propriete p = (Propriete)c;
 				if (p.getGenre() == "terrain") {
 					Terrain t = (Terrain)p;
-					Console.WriteLine (" ------------------");
-					Console.WriteLine ("|       "+t.getGroupe().getCouleur()+"       |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine (" ------------------");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|  "+t.getNom()+"  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|       "+t.getPrix()+"€       |");
-					Console.WriteLine (" -----------------");
+					string[] nom = t.getNom().Split(new char[] { ' ' });
+					if (nom.Length == 4) {
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|       " + t.getGroupe ().getCouleur () + "       |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|     " + nom [0] + " " + nom [1] + "       |");
+						Console.WriteLine ("|     " + nom [2] + " " + nom [3] + "      |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|       " + t.getPrix () + "€       |");
+						Console.WriteLine (" ------------------");
+					}
+					if (nom.Length == 3) {
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|       " + t.getGroupe ().getCouleur () + "       |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|     " + nom [0] + " " + nom [1] + "       |");
+						Console.WriteLine ("|     " + nom [2] + "   |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|       " + t.getPrix () + "€       |");
+						Console.WriteLine (" ------------------");
+					}
+					if (nom.Length == 2) {
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|       " + t.getGroupe ().getCouleur () + "       |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|     " + nom [0] + "   |");
+						Console.WriteLine ("|     " + nom [1] + "   |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|       " + t.getPrix () + "€       |");
+						Console.WriteLine (" ------------------");
+					}
+					if (nom.Length == 1) {
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|       " + t.getGroupe ().getCouleur () + "       |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|     " + nom [0] + "   |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|       " + t.getPrix () + "€       |");
+						Console.WriteLine (" ------------------");
+					}
 				}
 				if (p.getGenre() == "compagnie") {
 					Compagnie t = (Compagnie)p;
-					Console.WriteLine (" ------------------");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|  "+t.getNom()+"  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|       150€       |");
-					Console.WriteLine (" ------------------");
-				}
-				if (p.getGenre() == "gare") {
-					Gare g = (Gare)p;
-					Console.WriteLine (" ------------------");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|  "+g.getNom()+"  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|                  |");
-					Console.WriteLine ("|      200€        |");
-					Console.WriteLine (" ------------------");
+					string[] nom = t.getNom().Split(new char[] { ' ' });
+					if (nom.Length == 4) {
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|     " + nom [0] + " " + nom [1] + "       |");
+						Console.WriteLine ("|     " + nom [2] + " " + nom [3] + "      |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|       200€       |");
+						Console.WriteLine (" ------------------");
+					}
+					if (nom.Length == 3) {
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|     " + nom [0] + " " + nom [1] + "       |");
+						Console.WriteLine ("|     " + nom [2] + "   |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|       200€       |");
+						Console.WriteLine (" ------------------");
+					}
+					if (nom.Length == 2) {
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|     " + nom [0] + "   |");
+						Console.WriteLine ("|     " + nom [1] + "   |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|       200€       |");
+						Console.WriteLine (" ------------------");
+					}
+					if (nom.Length == 1) {
+						Console.WriteLine (" ------------------");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|     " + nom [0] + "   |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|                  |");
+						Console.WriteLine ("|       200€       |");
+						Console.WriteLine (" ------------------");
+					}
 				}
 
 			}
