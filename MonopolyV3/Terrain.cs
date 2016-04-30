@@ -10,7 +10,6 @@ namespace monopoly {
 		private int loyer3maisons;
 		private int loyer4maisons;
 		private int loyerHotel;
-		private int valeurHypothecaire;
 		private int prixMaison;
 		private int prixHotel;
 		private int nbMaison;
@@ -66,7 +65,6 @@ namespace monopoly {
 		// Contrôler qu'il y a bien 4 maisons sur toute la zone
 		// Renvoie vrai si il est possible de faire un hotel sur le terrrain support
 		public bool peutConstruireHotel(){
-
 			ArrayList zone = this.groupe.getPropriete();
 			bool peutConstruire = true;
 			foreach (Terrain t in zone) {
@@ -85,14 +83,45 @@ namespace monopoly {
 				throw new Exception("Vous ne pouvez pas construire d'hotel sur ce terrain : construisez des maisons sur les autres terrains avant");
 		}
 
+		// Renvoit vrai si le terrain support est destructible tout en préservant l'uniformité entre les terrains de la zone
+		public bool peutVendre(){
+			ArrayList zone = this.groupe.getPropriete();
+			bool uniforme = true;
+			foreach (Terrain t in zone) {
+				if (t.getNbMaison() > this.getNbMaison())
+					uniforme = false;
+			}
+			return uniforme;
+		}
+
+		// Vendre un bien à la banque
+		// Maison/hotel/terain
+		public void vendre(Joueur j){
+			if (nbMaison > 0 && nbMaison < 6) {
+				this.nbMaison--;
+				if (nbMaison == 4) {
+					j.crediter (this.prixHotel / 2);
+				} else {
+					j.crediter (this.prixMaison / 2);
+				}
+			} else {
+				j.hypothequer (this);
+			}
+		}
+
 		// get&set
-		public int getNbMaison()	{return this.nbMaison;}
+		public int getNbMaison()		{return this.nbMaison;}
 		public int getLoyerTerrain()	{return loyerTerrain;}
 		public int getLoyer1maison()	{return loyer1maison;}
 		public int getLoyer2maisons()	{return loyer2maisons;}
 		public int getLoyer3maisons()	{return loyer3maisons;}
 		public int getLoyer4maisons()	{return loyer4maisons;}
-		public int getLoyerHotel()	{return loyerHotel;}
+		public int getLoyerHotel()		{return loyerHotel;}
+		public int getPrixMaison()		{return prixMaison;}
+		public int getPrixHotel()		{return prixHotel;}
+
+		public void setNbMaisons(int i)			{this.nbMaison = i;}
+			
 	}
 
 }

@@ -21,15 +21,11 @@ namespace monopoly {
 			valeurHypothecaire = unPrix/2;
 		}
 
-		public void Acheter(Joueur acheteur) {
-			this.proprietaire = acheteur;
-		}
-
 		public bool estAchetee(){
 			if (this.proprietaire == null)	return false;
 			return true;
 		}
-
+			
 		public override void callback(Joueur j, Plateau plateau) {
 
 			// Propriété n'appartenant à personne
@@ -44,9 +40,13 @@ namespace monopoly {
 				if (this.proprietaire.Equals (j)) {
 					Console.WriteLine ("Vous êtes chez vous");
 				} else {
-					Console.WriteLine("Payez le loyer");
-					Propriete p = (Propriete)j.getCaseCourante ();
-					j.transaction (this.proprietaire, (p.getLoyer(j.getScore())));
+					if (this.getHypothequee ()) {
+						Console.WriteLine ("Propriete hypothequee, vous ne payez aucun loyer.");
+					} else {
+						Console.WriteLine ("Payez le loyer");
+						Propriete p = (Propriete)j.getCaseCourante ();
+						j.transaction (this.proprietaire, (p.getLoyer (j.getScore ())));
+					}
 				}
 			}
 		}
@@ -62,7 +62,7 @@ namespace monopoly {
 					else
 						return t.getLoyerTerrain ();
 				case 1:
-					return t.getLoyer2maisons ();
+					return t.getLoyer1maison ();
 				case 2:
 					return t.getLoyer2maisons ();
 				case 3:

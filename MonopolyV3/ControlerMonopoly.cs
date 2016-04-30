@@ -16,7 +16,7 @@ namespace monopoly
 		public ControlerMonopoly() {
 			// Initialiser les joueurs
 			// Créer le plateau de jeu qui sera le modèle
-			this.plateau = new Plateau(ControlerMonopoly.initJoueurs ());
+			this.plateau = new Plateau(initJoueurs ());
 			this.view = new vueMonopoly ();
 		}
 
@@ -26,19 +26,22 @@ namespace monopoly
 			Joueur joueurCourant = ControlerMonopoly.determinerPremier(this.plateau.getJoueurs());
 
 			// début de la partie
-			int score;
+			int score = 0;
+			int lesDoubles = 0;
 			while (this.plateau.getJoueurs().Count != 1) {
-				joueurCourant.setScore(5/*ControlerMonopoly.lancerDes()*/);
-				score = joueurCourant.getScore ();
-				Console.WriteLine (joueurCourant.getNom () + " a lancé les dés, il a fait " + score);
-				Console.ReadKey ();
+				// Traitement cas prison
 				if (joueurCourant.estEmprisonne() > 0) {
 					Console.WriteLine (joueurCourant.getNom () + " est en prison depuis " +joueurCourant.estEmprisonne()+" tour.");
-					if (Console.ReadLine () == "o") {
-						Console.WriteLine ("Vous payez 50€ et vous pouvez avancer");
-						joueurCourant.debiter (50);
-						plateau.getPrison ().liberer (joueurCourant);
-					} else {
+					if (joueurCourant.estEmprisonne() == 1) {
+						Console.WriteLine ("Voulez-vous payer 50€ et sortir maintenant? o/n");
+						if (Console.ReadLine () == "o") {
+							Console.WriteLine ("Vous payez 50€ et vous pouvez avancer");
+							joueurCourant.debiter (50);
+							plateau.getPrison ().liberer (joueurCourant);
+						}
+					}
+					// Si le joueur n'a pas été libéré
+					if (joueurCourant.estEmprisonne() > 0) {
 						joueurCourant.setEmprisonne (joueurCourant.estEmprisonne () + 1);
 						if (joueurCourant.estEmprisonne () == 4) {
 							Console.WriteLine ("Vous n'avez toujours pas fait de double. vous payez 50€ et vous pouvez avancer");
@@ -47,37 +50,63 @@ namespace monopoly
 						}
 					}
 				}
-				if (joueurCourant.estEmprisonne() == 0) {
-					plateau.avancer (score, joueurCourant);
-					Console.WriteLine (joueurCourant.getNom () + " se déplace");
-					Console.ReadKey ();
-					Console.WriteLine (joueurCourant.getNom () + " est sur la case " + joueurCourant.getCaseCourante ());
-					Console.ReadKey ();
 
-					// Effectuer l'action relative à la case courante
-					joueurCourant.getCaseCourante ().callback (joueurCourant, plateau);
+				// Traitement double
+				if (plateau.lanceDes ()) {
+					lesDoubles++;
+					Console.WriteLine ("Vous avez fait un double");
+					// Le joueur a fait un double, on le libère s'il était prisonnier
+					if (joueurCourant.estEmprisonne()>0) {
+						Console.WriteLine ("Vous sortez de prison");
+						plateau.getPrison().liberer (joueurCourant);
+						lesDoubles = 0;
+					}
+				} else
+					lesDoubles = 0;
+				
+				// 3 doubles d'affilée : Le joueur courant va en prison sans jouer
+				if (lesDoubles == 3) {
+					Console.WriteLine ("3 doubles d'affilée ! Vous allez en prison");
+					plateau.getPrison ().emprisonner (joueurCourant, plateau);
+					lesDoubles = 0;
+					// Fin de tour
+				} else {
+
+					// Affecter le score courant
+					joueurCourant.setScore(1/*plateau.getSommeDes()*/);
+					score = joueurCourant.getScore ();
+					Console.WriteLine (joueurCourant.getNom () + " a lancé les dés, il a fait " + score);
+					Console.ReadKey ();
+						
+					if (joueurCourant.estEmprisonne() == 0) {
+						plateau.avancer (score, joueurCourant);
+						Console.WriteLine (joueurCourant.getNom () + " se déplace");
+						Console.ReadKey ();
+						Console.WriteLine (joueurCourant.getNom () + " est sur la case " + joueurCourant.getCaseCourante ());
+						Console.ReadKey ();
+
+						// Effectuer l'action relative à la case courante
+						joueurCourant.getCaseCourante ().callback (joueurCourant, plateau);
+						// Vérifier qu'il reste des joueurs
+						if (this.plateau.getJoueurs ().Count == 1)
+							continue;
+					}
+					// Fin de tour
 				}
-				// Fin de tour
-
-				// TODO TEST CONSTRUCTION
-
 				Console.WriteLine (joueurCourant.getNom () + " a " + joueurCourant.getArgent ()+"€");
 				Console.ReadKey ();
-
-				joueurCourant = plateau.getJoueurSuivant (joueurCourant);
+				if (lesDoubles == 0) {
+					joueurCourant = plateau.getJoueurSuivant (joueurCourant);
+				}
 				Console.WriteLine ("Au tour de " + joueurCourant.getNom ());
 				Console.ReadKey ();
 			}
 
-			// TESTPART
-			LinkedList<Case> cases = plateau.getCases();
-			foreach (Case c in cases){
-				Console.WriteLine(c.ToString());
-			}
+			Console.WriteLine(this.plateau.getJoueurs().First.Value.getNom() + " a gagné !");
 		}
 
 		// Créer des instance de joueurs
-		public static LinkedList<Joueur> initJoueurs(){
+		public LinkedList<Joueur> initJoueurs(){
 			/*
 			// Demander combien de joueurs
 			Console.WriteLine ("Combien de joueurs physiques ?");
@@ -125,8 +154,7 @@ namespace monopoly
 		public static Joueur determinerPremier(LinkedList<Joueur> joueurs){
 			Joueur premier= joueurs.First.Value;
 			int max=0;
-			int score=0;
-
+			int score;
 			foreach (Joueur j in joueurs) {
 				score = lancerDes ();
 				Console.WriteLine (j.getNom () + " a lancé les dés, il a fait " + score);
@@ -140,26 +168,5 @@ namespace monopoly
 			Console.ReadKey ();
 			return premier;
 		}
-
-		/*
-		 * Méthode void vérifierAction(Joueur)
-		 * Regarder sur quelle case est le joueur j
-		 * --> Demander à la case quelle est son action ?
-		 * Exécuter une action si nécessaire (paiement de loyer
-		 */
-
-		// Test pattern Observer
-		public static void joueurADecouvert(Joueur j,int argent){
-			Console.WriteLine (j.getNom()+" a découvert de " + argent+"€ ");
-			Thread.Sleep(3000);
-			Console.WriteLine ("coucou");
-		}
-
-		public static void joueurADecouvert(){
-			Console.WriteLine ("Joueur à découvert !");
-			Thread.Sleep(3000);
-		}
-
 	}
-
 }

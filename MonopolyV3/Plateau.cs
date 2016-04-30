@@ -10,6 +10,7 @@ namespace monopoly {
 		private LinkedList<Joueur> joueurs = new LinkedList<Joueur>();
 		private Dictionary<string,Groupe> groupes = new Dictionary<string,Groupe>();
 		private Prison prison;
+		private ArrayList des = new ArrayList();
 
 		public Plateau (LinkedList<Joueur> uneArrayJoueurs)
 		{
@@ -83,6 +84,7 @@ namespace monopoly {
 			// Placer les joueurs sur la case depart
 			foreach (Joueur j in joueurs) {
 				j.setCaseCourante (cases.First.Value);
+				j.setPlateau (this);
 			}
 		}
 
@@ -165,14 +167,151 @@ namespace monopoly {
 				return joueurs.First.Value;
 			return joueurs.Find(unJoueur).Next.Value;
 		}
+		// Permet de stocker un score de dés
+		// Vrai si le joueur a fait un double
+		public bool lanceDes() {
+			des.Clear ();
+			Random rnd = new Random();
+			// Simule deux entiers pour mieux respecter les probabilités
+			int de1 = rnd.Next(6)+1;
+			int de2 = rnd.Next(6)+1;
+			des.Add (de1);
+			des.Add (de2);
+			if (de1 == de2)
+				return true;
+			return false;
+		}
 
-		public Prison getPrison(){		
-			return prison;
+		public int getSommeDes(){
+			int somme = 0;
+			foreach (int i in des)
+				somme += i;
+			return somme;
+		}
+
+		// pattern Observer
+		public void joueurADecouvert(Joueur j,int argent){
+			ArrayList test = this.listeProprietesPossedees (j);
+			test = this.possibilitesHypotheque (test, j);
+			int choix = 0;
+			Terrain t;
+			Console.WriteLine (j.getNom () + " a decouvert de " + (argent*(-1)) + "€ ");
+			Console.WriteLine ("Vous pouvez :");
+			Console.WriteLine (choix + " - Abandonner");
+
+			// Parcourir toutes les propriétés possédées par le joueur
+			// On propose d'hypothequer les terrains, de vendre des maisons, ou d'abandonner
+			foreach (Propriete p in test) {
+				if (!p.getHypothequee()) {
+					// Regarder si c'est un terrain pour proposer de vendre les maisons/hotel d'abord
+					if (p is Terrain){
+						t = (Terrain)p;
+						switch (t.getNbMaison ()) {
+						case 0:
+							choix++;
+							Console.WriteLine (choix + " - hypothequer " + p.getNom ());
+							Console.WriteLine("(+"+(t.getValeurHypothecaire())+" €)");
+							break;
+						case 5:
+							choix++;
+							Console.WriteLine (choix + " - vendre l'hotel " + p.getNom ());
+							Console.WriteLine("(+"+(t.getPrixHotel()/2)+" €)");
+
+							break;
+						default:
+							choix++;
+							Console.WriteLine (choix + " - vendre une maison " + p.getNom ());
+							Console.WriteLine ("(+" +(t.getPrixMaison ()/2) + " €)");
+							break;
+						}
+					} else {
+						choix++;
+						Console.WriteLine (choix + " - hypothequer " + p.getNom ());
+						Console.WriteLine("(+"+(p.getValeurHypothecaire())+" €)");
+					}
+				}
+			}
+
+			// Effectuer l'action décidée par le joueur
+			choix = int.Parse(Console.ReadLine());
+			if (choix == 0) {
+				this.faillite(j);
+				return;
+			} else {
+				if (test[choix-1] is Terrain){
+					t = (Terrain)test[choix-1];
+					t.vendre (j);
+				} else
+					j.hypothequer((Propriete)test[choix-1]);
+			}
+		}
+
+		// Méthode qui prend en paramètres une Arraylist de Propriétés possédée par le Joueur j
+		// Renvoit une ArrayList des propriétés qui peuvent actuellement être hypothéquées ou privées d'une maison/hotel
+		public ArrayList possibilitesHypotheque(ArrayList proprietes, Joueur j){
+			ArrayList res = new ArrayList ();
+			Terrain t;
+			// Le joueur doit vendre en priorité les hotels
+			// Le joueur doit vendre uniformément les maisons
+			// Si le joueur possède tous les terrains d'un groupe, il ne peut hypothequer un des terrains seulement s'il n'y a pas de maisons sur les terrains du groupe
+			// S'il ne possède pas tous les terrains du groupe OU si la propriété n'est pas un terrain, il peut hypothequer
+			foreach (Propriete p in proprietes) {
+				if (p is Terrain) {
+					t = (Terrain)p;
+					if (j.PossedeTousLesTerrains (t)) {
+						if (t.peutVendre())	res.Add(p);
+					} else {
+						res.Add (p);
+					}
+				} else {
+					res.Add (p);
+				}
+			}
+			return res;
+		}
+
+		// Renvoit une collection de Propriétés qui ont pour propriétaire le joueur passé en paramètre
+		// Ne tient pas compte des propritetes hypothequees
+		public ArrayList listeProprietesPossedees(Joueur j){
+			ArrayList res = new ArrayList ();
+			Propriete p;
+			foreach (Case c in cases) {
+				if (c.getType () == "propriete") {
+					p = (Propriete)c;
+					if (p.getProprietaire () != null) {
+						if (p.getProprietaire ().Equals (j) && !p.getHypothequee())
+							res.Add (p);
+					}
+				}
+			}
+			return res;
+		}
+
+		// Joueur fait faillite, il donne toutes ses propriétés à la banque
+		public void faillite(Joueur j) {
+			ArrayList proprietes = j.getPlateau().listeProprietesPossedees (j);
+			Terrain t;
+			foreach (Propriete p in proprietes) {
+				p.setProprietaire (null);
+				if (p is Terrain) {
+					t = (Terrain)p;
+					t.setNbMaisons (0);
+				}
+			}
+			this.joueurs.Remove (j);
+			Console.WriteLine (j.getNom()+" a fait faillite !");
 		}
 
 		//get&set
 		public LinkedList<Case> getCases()		{return this.cases;}
 		public LinkedList<Joueur> getJoueurs()	{return joueurs;}
+		public Prison getPrison()				{return prison;}
+		public Case getPrisonVisite() {
+			foreach (Case c in cases) {
+				if (c.getType () == "caseNeutre")
+					return c;
+			}
+			throw new Exception ("ERROR");
+		}
 	}
-
 }

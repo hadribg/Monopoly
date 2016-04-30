@@ -15,9 +15,7 @@ namespace monopoly {
 			loyer4gares = l4;
 			groupe = unGroupe;
 		}
-
-		public string getNom()	{return nom;}
-
+			
 		// get
 		public int getLoyer1gare()	{return loyer1gare;}
 		public int getLoyer2gares()	{return loyer2gares;}

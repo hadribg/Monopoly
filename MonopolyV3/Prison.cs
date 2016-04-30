@@ -27,7 +27,7 @@ namespace monopoly {
 		public void emprisonner (Joueur j, Plateau p) {
 			prisonniers.Add(j);
 			j.setEmprisonne (1);
-			j.setCaseCourante (p.getPrison ());
+			j.setCaseCourante (p.getPrisonVisite());
 		}
 
 		public override void callback (Joueur j, Plateau p)
