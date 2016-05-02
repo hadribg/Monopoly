@@ -6,6 +6,8 @@ namespace monopoly {
 			:base(unNom){
 
 		}
+
+
 	}
 
 }

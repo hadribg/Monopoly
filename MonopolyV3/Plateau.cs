@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 
 
@@ -193,6 +194,13 @@ namespace monopoly {
 		public void joueurADecouvert(Joueur j,int argent){
 			ArrayList test = this.listeProprietesPossedees (j);
 			test = this.possibilitesHypotheque (test, j);
+
+			// Cas où le joueur n'a plus de propriété à hypothequer
+			if (test.Count == 0) {
+				this.faillite(j);
+				return;
+			}
+
 			int choix = 0;
 			Terrain t;
 			Console.WriteLine (j.getNom () + " a decouvert de " + (argent*(-1)) + "€ ");
@@ -216,7 +224,6 @@ namespace monopoly {
 							choix++;
 							Console.WriteLine (choix + " - vendre l'hotel " + p.getNom ());
 							Console.WriteLine("(+"+(t.getPrixHotel()/2)+" €)");
-
 							break;
 						default:
 							choix++;
@@ -231,9 +238,8 @@ namespace monopoly {
 					}
 				}
 			}
-
 			// Effectuer l'action décidée par le joueur
-			choix = int.Parse(Console.ReadLine());
+			choix = 1;//int.Parse(Console.ReadLine());
 			if (choix == 0) {
 				this.faillite(j);
 				return;
@@ -301,6 +307,13 @@ namespace monopoly {
 			this.joueurs.Remove (j);
 			Console.WriteLine (j.getNom()+" a fait faillite !");
 		}
+
+		// Renvoit une instance sous forme de collection decrivant l'issue d'une enchère
+		// Prend en paramètre la propriete mise en jeu
+		/*public OrderedDictionary encheres(Propriete p) {
+			// TODO
+			return;
+		}*/
 
 		//get&set
 		public LinkedList<Case> getCases()		{return this.cases;}
