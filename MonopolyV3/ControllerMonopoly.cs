@@ -173,5 +173,9 @@ namespace monopoly
 			Thread.Sleep (500);
 			return premier;
 		}
+
+		// get&set
+		public vueMonopoly getVue(){return this.view;}
+		public Plateau getModele(){return this.plateau;}
 	}
 }

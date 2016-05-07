@@ -17,7 +17,7 @@ namespace monopoly {
 		{
 			joueurs = uneArrayJoueurs;
 
-			System.Text.Encoding encoding = System.Text.Encoding.GetEncoding("iso-8859-1");
+			System.Text.Encoding encoding = System.Text.Encoding.GetEncoding("utf-8");
 			StreamReader monStreamReader = new StreamReader("../../cases.csv", encoding);
 
 			// Chargement du loyer des gares
@@ -47,7 +47,7 @@ namespace monopoly {
 					cases.AddLast (new Chance());
 					break;
 				case "prison":
-					Prison p = new Prison ();
+					Prison p = new Prison (propCase[1]);
 					cases.AddLast (p);
 					prison = p;
 					break;

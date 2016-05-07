@@ -31,7 +31,7 @@ namespace monopoly {
 			// Propriété n'appartenant à personne
 			if (this.proprietaire == null) {
 				Console.WriteLine ("Voulez vous acheter cette propriete ? o/n");
-				if (Console.ReadLine () == "o") {
+				if (/*Console.ReadLine ()*/"o" == "o") {
 					j.acheter ((Propriete)j.getCaseCourante ());
 				} else {
 					// ENCHERES

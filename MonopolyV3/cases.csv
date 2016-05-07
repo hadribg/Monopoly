@@ -10,7 +10,7 @@ propriete,terrain,cyan,100,rue de vaugirard,6,30,90,270,400,550,50,450
 chance
 propriete,terrain,cyan,100,rue des courcelles,6,30,90,270,400,550,50,450
 propriete,terrain,cyan,120,avenue de la republique,8,40,100,300,450,600,50,450
-caseNeutre,visitePrison
+caseNeutre,Prison : Simple visite
 propriete,terrain,magenta,140,boulevard de la villette,10,50,150,450,625,750,100,500
 propriete,compagnie,compagnie de distribution de l’electricite,150
 propriete,terrain,magenta,140,avenue de neuilly,10,50,150,450,625,750,100,500
@@ -30,7 +30,7 @@ propriete,terrain,jaune,260,faubourg saint-honore,22,110,330,800,975,1150,150,75
 propriete,terrain,jaune,260,place de la bourse,22,110,330,800,975,1150,150,750
 propriete,compagnie,compagnie de distribution des eaux,150
 propriete,terrain,jaune,280,rue la fayette,24,120,360,850,1025,1200,150,750
-prison
+prison,Allez en prison!
 propriete,terrain,vert,300,avenue de breteuil,26,130,390,900,1100,1275,200,1000
 propriete,terrain,vert,300,avenue foch,26,130,390,900,1100,1275,200,1000
 communaute

@@ -5,11 +5,12 @@ using System.Collections.Generic;
 namespace monopoly {
 	public class Prison : Case  {
 
-		ArrayList prisonniers = new ArrayList ();
+		private ArrayList prisonniers = new ArrayList ();
+		private string affichageCase;
 
-		public Prison()
+		public Prison(string unNomCase)
 			: base ("prison"){
-
+			affichageCase = unNomCase;
 		}
 
 		// Permet de savoir si un joueur est actuellement en prison
@@ -35,5 +36,7 @@ namespace monopoly {
 			emprisonner (j,p);
 			Console.WriteLine ("Vous allez en prison");
 		}
+
+		public string getAffichageCase()	{return this.affichageCase;}
 	}
 }

@@ -15,6 +15,9 @@ namespace monopoly {
 			Console.WriteLine ("Vous payez les impots");
 		}
 
+		//get&set
+		public string getNom()	{return this.nom;}
+		public int getPrix()	{return this.prix;}
 	}
 
 }
